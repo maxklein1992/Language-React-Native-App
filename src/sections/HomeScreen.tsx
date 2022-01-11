@@ -8,9 +8,9 @@ import firebase from "../../firebase/firebase-config";
 
 const HomeScreen = () => {
   //  USESTATES
-  const [status, setStatus] = useState("start");
-  const [question, setQuestion] = useState(1);
-  const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [status, setStatus] = useState<string>("start");
+  const [question, setQuestion] = useState<number>(1);
+  const [selectedAnswer, setSelectedAnswer] = useState<string>("");
 
   const [allQuestions, setAllQuestions] = useState<any[]>([]);
   const [allAnswers, setAllAnswers] = useState<any[]>([]);
@@ -216,12 +216,21 @@ const HomeScreen = () => {
             padding: 30,
           }}
         >
-          <Text style={{ color: "white", fontSize: 15 }}>
-            Fill in the missing word
-          </Text>
-          <Text style={{ color: "white", fontSize: 20, marginTop: 20 }}>
-            {currentInfo[0]?.sentence}
-          </Text>
+          <View
+            style={{
+              height: "20%",
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "flex-start",
+            }}
+          >
+            <Text style={{ color: "white", fontSize: 15 }}>
+              Fill in the missing word
+            </Text>
+            <Text style={{ color: "white", fontSize: 20, marginTop: 20 }}>
+              {currentInfo[0]?.sentence}
+            </Text>
+          </View>
           <View
             style={{
               flexDirection: "row",
@@ -268,7 +277,7 @@ const HomeScreen = () => {
           </View>
           <View
             style={{
-              height: "70%",
+              height: "50%",
               width: "100%",
             }}
           >
@@ -276,45 +285,49 @@ const HomeScreen = () => {
               return (
                 <View
                   style={{
-                    flexDirection: "row",
+                    flexDirection: "column",
                     justifyContent: "center",
                     alignItems: "center",
                     marginTop: 20,
-                    height: "30%",
+                    height: "100%",
                   }}
                 >
-                  <Answer
-                    value={answer?.answer_1}
-                    status={status}
-                    handlePress={() => {
-                      setStatus("selected");
-                      setSelectedAnswer(answer?.answer_1);
-                    }}
-                  ></Answer>
-                  <Answer
-                    value={answer?.answer_2}
-                    status={status}
-                    handlePress={() => {
-                      setStatus("selected");
-                      setSelectedAnswer(answer?.answer_2);
-                    }}
-                  ></Answer>
-                  <Answer
-                    value={answer?.answer_3}
-                    status={status}
-                    handlePress={() => {
-                      setStatus("selected");
-                      setSelectedAnswer(answer?.answer_3);
-                    }}
-                  ></Answer>
-                  <Answer
-                    value={answer?.answer_4}
-                    status={status}
-                    handlePress={() => {
-                      setStatus("selected");
-                      setSelectedAnswer(answer?.answer_4);
-                    }}
-                  ></Answer>
+                  <View style={{ flexDirection: "row", height: "50%" }}>
+                    <Answer
+                      value={answer?.answer_1}
+                      status={status}
+                      handlePress={() => {
+                        setStatus("selected");
+                        setSelectedAnswer(answer?.answer_1);
+                      }}
+                    ></Answer>
+                    <Answer
+                      value={answer?.answer_2}
+                      status={status}
+                      handlePress={() => {
+                        setStatus("selected");
+                        setSelectedAnswer(answer?.answer_2);
+                      }}
+                    ></Answer>
+                  </View>
+                  <View style={{ flexDirection: "row", height: "50%" }}>
+                    <Answer
+                      value={answer?.answer_3}
+                      status={status}
+                      handlePress={() => {
+                        setStatus("selected");
+                        setSelectedAnswer(answer?.answer_3);
+                      }}
+                    ></Answer>
+                    <Answer
+                      value={answer?.answer_4}
+                      status={status}
+                      handlePress={() => {
+                        setStatus("selected");
+                        setSelectedAnswer(answer?.answer_4);
+                      }}
+                    ></Answer>
+                  </View>
                 </View>
               );
             })}

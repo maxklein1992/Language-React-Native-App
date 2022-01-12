@@ -4,63 +4,40 @@ import { Constants } from "../general/Constants";
 import { Ionicons } from "@expo/vector-icons";
 
 interface ButtonProps {
-  continuePress: () => void;
-  validatePress: () => void;
-  status: string;
-  correctAnswer: any;
+  onPress: () => void;
+  correctAnswer: string;
+  style: string | null;
+  title: string | null;
 }
 
-const Button: FC<ButtonProps> = ({
-  continuePress,
-  validatePress,
-  status,
-  correctAnswer,
-}) => {
-  let title = "";
-  if (status === "selected") {
-    title = "Check answer";
-  } else {
-    title = "Continue";
-  }
-
-  let onPress = null;
-  if (status === "selected") {
-    onPress = validatePress;
-  } else if (status === "correct" || status === "false") {
-    onPress = continuePress;
-  } else {
-    onPress = () => {};
-  }
-
-  let styleBackground = null;
-  if (status === "start" || status === "selected") {
-    styleBackground = styles.background;
-  } else if (status === "correct") {
-    styleBackground = styles.backgroundBlue;
-  } else if (status === "false") {
-    styleBackground = styles.backgroundRed;
-  }
-
+const Button: FC<ButtonProps> = ({ onPress, correctAnswer, style, title }) => {
   let styleButton = null;
-  if (status === "start") {
-    styleButton = styles.start;
-  } else if (status === "selected") {
-    styleButton = styles.selected;
-  } else if (status === "correct") {
-    styleButton = styles.correct;
-  } else {
-    styleButton = styles.false;
-  }
+  let styleBackground = null;
+  let textStatus = null;
 
-  let isVisible = false;
-  if (status === "correct" || status === "false") {
-    isVisible = true;
-  } else {
-    isVisible = false;
+  switch (style) {
+    case "Green":
+      styleButton = styles.green;
+      break;
+    case "Blue":
+      styleButton = styles.blue;
+      break;
+    case "White/Blue":
+      styleButton = styles.whiteBlue;
+      styleBackground = styles.backgroundBlue;
+      textStatus = "Blue";
+      break;
+    case "White/Red":
+      styleButton = styles.whiteRed;
+      styleBackground = styles.backgroundRed;
+      textStatus = "Red";
+      break;
+    default:
+      break;
   }
 
   return (
-    <View style={[styleBackground]}>
+    <View style={[styles.background, styleBackground]}>
       <Text
         style={{
           color: "white",
@@ -69,10 +46,14 @@ const Button: FC<ButtonProps> = ({
           top: 20,
           left: 35,
           fontWeight: "bold",
-          display: isVisible ? "flex" : "none",
+          display: textStatus ? "flex" : "none",
         }}
       >
-        {status === "correct" ? "Great Job!" : `Answer: ${correctAnswer}`}
+        {textStatus === "Blue"
+          ? "Great Job!"
+          : textStatus === "Red"
+          ? `Answer: ${correctAnswer}`
+          : null}
       </Text>
       <Ionicons
         name="flag-sharp"
@@ -82,7 +63,7 @@ const Button: FC<ButtonProps> = ({
           position: "absolute",
           top: 20,
           right: 35,
-          display: isVisible ? "flex" : "none",
+          display: textStatus ? "flex" : "none",
         }}
       />
       <Pressable style={[styles.button, styleButton]} onPress={onPress}>
@@ -93,6 +74,7 @@ const Button: FC<ButtonProps> = ({
 };
 
 const styles = StyleSheet.create({
+  //  General
   button: {
     display: "flex",
     alignItems: "center",
@@ -108,22 +90,6 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     letterSpacing: 0.25,
   },
-  start: {
-    backgroundColor: Constants.THEME.lightGreen,
-    color: "white",
-  },
-  selected: {
-    backgroundColor: Constants.THEME.blue,
-    color: "white",
-  },
-  correct: {
-    backgroundColor: "white",
-    color: Constants.THEME.blue,
-  },
-  false: {
-    backgroundColor: "white",
-    color: Constants.THEME.red,
-  },
   background: {
     height: "70%",
     width: "100%",
@@ -132,6 +98,26 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
   },
+
+  //  Colors buttons
+  green: {
+    backgroundColor: Constants.THEME.lightGreen,
+    color: "white",
+  },
+  blue: {
+    backgroundColor: Constants.THEME.blue,
+    color: "white",
+  },
+  whiteBlue: {
+    backgroundColor: "white",
+    color: Constants.THEME.blue,
+  },
+  whiteRed: {
+    backgroundColor: "white",
+    color: Constants.THEME.red,
+  },
+
+  //  Background
   backgroundBlue: {
     height: "70%",
     width: "100%",

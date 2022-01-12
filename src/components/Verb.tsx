@@ -1,43 +1,40 @@
 import React, { FC } from "react";
-import { Pressable, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { Text, StyleSheet } from "react-native";
 import { Constants } from "../general/Constants";
-import { useState, useEffect } from "react";
 
 interface VerbProps {
-  value: string;
-  selectedAnswer: any;
-  status: string;
+  title: string | null;
+  style: string | null;
 }
 
-const Verb: FC<VerbProps> = ({ value, selectedAnswer, status }) => {
+const Verb: FC<VerbProps> = ({ title, style }) => {
   let styleVerb = null;
 
-  if (value) {
-    styleVerb = styles.value;
-  } else if (!value && selectedAnswer && status === "selected") {
-    styleVerb = styles.selected;
-  } else if (!value && selectedAnswer && status === "correct") {
-    styleVerb = styles.correct;
-  } else if (!value && selectedAnswer && status === "false") {
-    styleVerb = styles.false;
-  } else {
-    styleVerb = styles.novalue;
-  }
-
-  let title = "";
-  if (value) {
-    title = value;
-  } else if (!value && selectedAnswer) {
-    title = selectedAnswer;
-  } else {
-    title = "";
+  switch (style) {
+    case "Dotted Line":
+      styleVerb = styles.dottedLine;
+      break;
+    case "Red":
+      styleVerb = [styles.red, styles.color];
+      break;
+    case "Blue":
+      styleVerb = [styles.blue, styles.color];
+      break;
+    case "White":
+      styleVerb = [styles.white, styles.color];
+      break;
+    case "Solid Line":
+      styleVerb = styles.solidLine;
+      break;
+    default:
+      break;
   }
 
   return <Text style={[styleVerb]}>{title}</Text>;
 };
 
 const styles = StyleSheet.create({
-  value: {
+  dottedLine: {
     color: "white",
     fontSize: 18,
     marginRight: 10,
@@ -46,7 +43,7 @@ const styles = StyleSheet.create({
     borderColor: Constants.THEME.lightGreen,
     height: 25,
   },
-  novalue: {
+  solidLine: {
     color: "white",
     fontSize: 18,
     marginRight: 10,
@@ -55,59 +52,33 @@ const styles = StyleSheet.create({
     borderColor: Constants.THEME.lightGreen,
     height: 25,
   },
-  selected: {
+  color: {
     marginRight: 10,
     paddingVertical: 12,
     paddingHorizontal: 18,
+    textAlign: "center",
+    fontWeight: "bold",
+    borderRadius: 17,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 12.35,
+    elevation: 19,
+  },
+  white: {
     backgroundColor: "white",
-    textAlign: "center",
-    fontWeight: "bold",
-    borderRadius: 17,
     color: Constants.THEME.darkGreen,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 12.35,
-    elevation: 19,
   },
-  correct: {
-    marginRight: 10,
-    paddingVertical: 12,
-    paddingHorizontal: 18,
+  blue: {
     backgroundColor: Constants.THEME.blue,
-    textAlign: "center",
-    fontWeight: "bold",
-    borderRadius: 17,
     color: "white",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 12.35,
-    elevation: 19,
   },
-  false: {
-    marginRight: 10,
-    paddingVertical: 12,
-    paddingHorizontal: 18,
+  red: {
     backgroundColor: Constants.THEME.red,
-    textAlign: "center",
-    fontWeight: "bold",
-    borderRadius: 17,
     color: "white",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 12.35,
-    elevation: 19,
   },
 });
 

@@ -8,7 +8,6 @@ import firebase from "../../firebase/firebase-config";
 
 const HomeScreen = () => {
   //  USESTATES
-  const [status, setStatus] = useState<string>("start");
   const [isChoiceConfirmed, setIsChoiceConfirmed] = useState<boolean>(false);
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
@@ -56,36 +55,18 @@ const HomeScreen = () => {
     }
   };
 
-  const updateStatus = (newStatus: string) => {
-    if (newStatus === "start") {
-      setStatus("start");
-    } else if (newStatus === "selected") {
-      setStatus("selected");
-    } else if (newStatus === "correctAnswer") {
-      setStatus("correctAnswer");
-    } else if (newStatus === "wrongAnswer") {
-      setStatus("wrongAnswer");
-    }
-  };
-
-  const restartQuiz = () => {
-    alert("Hoi");
-  };
-
   const nextQuestion = () => {
     if (currentQuestionIndex + 1 < allQuestions?.length) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setIsChoiceConfirmed(false);
       setIsCorrect(false);
       setSelectedAnswer("");
-      updateStatus("start");
     } else {
       alert("You finished the exercise! Try again");
       setCurrentQuestionIndex(0);
       setIsChoiceConfirmed(false);
       setIsCorrect(false);
       setSelectedAnswer("");
-      updateStatus("start");
     }
   };
 
@@ -134,7 +115,7 @@ const HomeScreen = () => {
           {allQuestions[currentQuestionIndex]?.verbs.map(
             (verb: string, index: number) => (
               <Verb
-                key={index}
+                key={`verb—${index}`}
                 title={verb ? verb : selectedAnswer ? selectedAnswer : null}
                 style={
                   verb
